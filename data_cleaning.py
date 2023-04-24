@@ -253,52 +253,50 @@ class DataCleaning:
         # clean store data retrieve from the API
 
         # 1. remove column lat
-        #del store_data['lat']
+        del store_data['lat']
         
         # 2. fix row 48, index 0, so that address and locality are "online" 
         #    and longitude and latitude are "0"
 
         #store_data = store_data.reset_index()
-
         #store_data.rename(index={0:451},inplace=True)
-
         #store_data = store_data.sort_values(by='index')
 
-        #store_data.iloc[48,1] = "online"
-        #store_data.iloc[48,2] = "0"
-        #store_data.iloc[48,3] = "online"
-        #store_data.iloc[48,8] = "0"
+        store_data.iloc[0,1] = "online"
+        store_data.iloc[0,2] = "0"
+        store_data.iloc[0,3] = "online"
+        store_data.iloc[0,8] = "0"
 
         # 3. remove rows with n/a in them
-        #store_data = store_data.dropna()
+        store_data = store_data.dropna(how='all')
 
         # 4. remove lines with garbage (values in longitude OR latitude 
         # are not numbers) - including indexes 218, 406, 437 (all 'NULL') 
-        #store_data = store_data[pd.to_numeric(store_data['longitude'], errors='coerce').notnull()]
+        store_data = store_data[pd.to_numeric(store_data['longitude'], errors='coerce').notnull()]
 
         # 5. fix index 31: staff_numbers = 'J78'  (apply fix to all rows)
-        #store_data['staff_numbers'] = store_data['staff_numbers'].map(lambda x: ''.join([i for i in x if i.isdigit()]))
+        store_data['staff_numbers'] = store_data['staff_numbers'].map(lambda x: ''.join([i for i in x if i.isdigit()]))
 
         # 6. change column type of longitude, latitude, staff_numbers into 
         #    numbers
-        #store_data[['longitude', 'latitude', 'staff_numbers']] = store_data[['longitude', 'latitude', 'staff_numbers']].apply(pd.to_numeric)
+        store_data[['longitude', 'latitude', 'staff_numbers']] = store_data[['longitude', 'latitude', 'staff_numbers']].apply(pd.to_numeric)
 
         # 7. correct continent names (remove 'ee')
-        #store_data.replace('eeEurope', 'Europe', inplace=True)
-        #store_data.replace('eeAmerica', 'America', inplace=True)
+        store_data.replace('eeEurope', 'Europe', inplace=True)
+        store_data.replace('eeAmerica', 'America', inplace=True)
 
         # 8. move column latitude next to column longitude
-        #store_data = store_data[['index', 'address', 'longitude', 'latitude', 'locality', 'store_code', 'staff_numbers', 'opening_date', 'store_type', 'country_code', 'continent']]
+        store_data = store_data[['index', 'address', 'longitude', 'latitude', 'locality', 'store_code', 'staff_numbers', 'opening_date', 'store_type', 'country_code', 'continent']]
 
         # 9. change formatting of opening_date into YYYY-MM-DD and the type 
         #    into a date type
-        #store_data['opening_date'] = pd.to_datetime(store_data['opening_date']).dt.date
+        store_data['opening_date'] = pd.to_datetime(store_data['opening_date']).dt.date
 
         # 10. change carriage returns into commas in address
-        #store_data = store_data.replace(r'\n',', ', regex=True)
+        store_data = store_data.replace(r'\n',', ', regex=True)
         
         # 11. remove duplicate rows
-        #store_data = store_data.drop_duplicates()
+        store_data = store_data.drop_duplicates()
 
         # 12. restore n/a to row 48, the "web portal"
 #        replace_with_na_all(data = store_data, condition = 'longitude' == 0)

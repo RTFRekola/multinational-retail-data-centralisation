@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy import inspect
 from sqlalchemy.orm import sessionmaker
 from sklearn.datasets import load_iris
-#from data_extraction import DataExtractor
 
 class DatabaseConnector:
     '''
@@ -60,12 +59,12 @@ class DatabaseConnector:
         local_engine = create_engine(f"{DATABASE_TYPE}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
         Session = sessionmaker(bind=local_engine)
         with Session() as session:
-#            df = pd_table
-#            df.to_sql("dim_users", con=local_engine, if_exists='replace', index=False)
+            df = pd_table
+            df.to_sql("dim_users", con=local_engine, if_exists='replace', index=False)
 #            pdfdf = pdf_data
 #            pdfdf.to_sql("dim_card_details", con=local_engine, if_exists='replace', index=False)
-            sedf = store_data
-            sedf.to_sql("dim_store_details", con=local_engine, if_exists='replace', index=False)
+#            sedf = store_data
+#            sedf.to_sql("dim_store_details", con=local_engine, if_exists='replace', index=False)
 #            podf = product_data
 #            podf.to_sql("dim_products", con=local_engine, if_exists='replace', index=False)
 #            ordf = orders_data
