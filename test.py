@@ -19,9 +19,9 @@ store_details = pd.DataFrame(data)
 clean_products = pd.DataFrame(data)
 orders_df = pd.DataFrame(data)
 sales_data = pd.DataFrame(data)
-
-pd_table = DaC.clean_user_data(DEx.read_rds_table("user"))
 '''
+pd_table = DaC.clean_user_data(DEx.read_rds_table("user"))
+
 pdf_data = DaC.clean_card_data(DEx.retrieve_pdf_data())
 
 endpointurl = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores"
@@ -40,11 +40,9 @@ store_details = DaC.clean_store_data(pd_stores)
 s3_address = "s3://data-handling-public/products.csv"
 product_data = DEx.extract_from_s3(s3_address)
 clean_products = DaC.clean_products_data(product_data)
-#DbC.upload_to_db(clean_products)
-
+'''
 orders_df = DaC.clean_orders_data(DEx.read_rds_table("orders"))
-#DbC.upload_to_db(orders_df)
-
+'''
 s3_address = "https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json"
 sales_data = DEx.extract_json_from_s3(s3_address)
 clean_sales = DaC.clean_sales_data(sales_data)
