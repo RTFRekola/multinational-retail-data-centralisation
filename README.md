@@ -19,10 +19,17 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 - created files <i>data_extraction.py</i>, <i>database_utils.py</i> and <i>data_cleaning.py</i> to store the code in
 - created file <i>main_programme.py</i> to tie the code in the aforementioned files together
 
-- in <i>database_utils.py</i>, created a method (<i>read_db_creds</i>), which reads credentials yaml file
-- in <i>database_utils.py</i>, created a method init_db_engine, to read the credentials and initialise database engine
+- in <i>database_utils.py</i>, created a method <i>read_db_creds</i>, which reads credentials yaml file
+- in <i>database_utils.py</i>, created a method <i>init_db_engine</i>, to read the credentials and initialise database engine
 
 ![multinational-retail-data-centralisation](database_utils-1.png?raw=true "Read credentials from yaml file and initialise database engine.")
+
+- in <i>data_utils.py</i>, created a method <i>list_db_tables</i>, which lists the names of database tables 
+- in <i>data_extraction.py</i>, created a method <i>read_rds_tables</i>, which reads the desired database table into a Pandas DataFrame
+
+![multinational-retail-data-centralisation](database_utils-2.png?raw=true "Find the names of database tables.")
+![multinational-retail-data-centralisation](database_extraction-1.png?raw=true "Read the desired database table.")
+
 
 ## Milestone 3: Create the database schema.
 
