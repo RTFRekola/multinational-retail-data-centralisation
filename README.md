@@ -28,7 +28,7 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 - in <i>data_extraction.py</i>, created a method <i>read_rds_tables</i>, which reads the desired database table into a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](database_utils-2.png?raw=true "Find the names of database tables.")
-![multinational-retail-data-centralisation](database_extraction-1.png?raw=true "Read the desired database table.")
+![multinational-retail-data-centralisation](data_extraction-1.png?raw=true "Read the desired database table.")
 
 
 ## Milestone 3: Create the database schema.
