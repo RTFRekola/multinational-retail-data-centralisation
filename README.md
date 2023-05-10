@@ -5,12 +5,24 @@ You work for a multinational company that sells various goods across the globe. 
 ## Milestone 1: Set up the environment.
 
 This consists of getting the Git and GitHub going. 
+
+- prerequisites discussed the use of command line, file operations and Git/GitHub
 - created a new repository in GitHub called multinational-retail-data-centralisation
-- 
+- added the URL for the remote repository where to push the local repository
 
 ## Milestone 2: Extract and clean the data from the data sources. 
 
 Besides the installation of PostgreSQL and Pgadmin, an SQL database is created to store the extracted data. Tools are created to extract and clean various kinds of data. 
+
+- prerequisites discussed VSCode, Python programming, Pandas dataframes, AWS, APIs and SQL
+- initialised the database "sales_data" in pgAdmin4
+- created files <i>data_extraction.py</i>, <i>database_utils.py</i> and <i>data_cleaning.py</i> to store the code in
+- created file <i>main_programme.py</i> to tie the code in the aforementioned files together
+
+- in <i>database_utils.py</i>, created a method (<i>read_db_creds</i>), which reads credentials yaml file
+- in <i>database_utils.py</i>, created a method init_db_engine, to read the credentials and initialise database engine
+
+![multinational-retail-data-centralisation](database_utils-1.png?raw=true "Read credentials from yaml file and initialise database engine.")
 
 ## Milestone 3: Create the database schema.
 

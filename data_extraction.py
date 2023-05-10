@@ -51,7 +51,9 @@ class DataExtractor:
         try:
             stores_data = pd.DataFrame(data, index=[0])
         except:
-            stores_data = pd.DataFrame({'index': 999, 'address': 'N/A', 'longitude': 'N/A', 'lat': 'N/A', 'locality': 'N/A', 'store_code': 'N/A', 'staff_numbers': 'N/A', 'opening_date': 'N/A', 'store_type': 'N/A', 'latitude': 'N/A', 'country_code': 'N/A', 'continent': 'N/A'}, index=[0])
+            stores_data = pd.DataFrame({'index': 999, 'address': 'N/A', 'longitude': 'N/A', 'lat': 'N/A', 'locality': 'N/A', 
+                                        'store_code': 'N/A', 'staff_numbers': 'N/A', 'opening_date': 'N/A', 'store_type': 'N/A', 
+                                        'latitude': 'N/A', 'country_code': 'N/A', 'continent': 'N/A'}, index=[0])
         # end try
         return stores_data
     # end retrieve_stores_data

@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+'''
+Created on Wed 12 Apr 2023 at 14:25 UT
+Last modified on Tue 9 May 2023 at 20:05 UT 
+
+@author: Rami T. F. Rekola 
+
+Multinational Retail Data Centralisation
+'''
+
+
 '''
 file1 = "database_utils.py"
 file2 = "data_extraction.py"
@@ -48,3 +60,5 @@ sales_data = DEx.extract_json_from_s3(s3_address)
 clean_sales = DaC.clean_sales_data(sales_data)
 
 DbC.upload_to_db(pd_table, pdf_data, store_details, clean_products, orders_df, sales_data)
+
+

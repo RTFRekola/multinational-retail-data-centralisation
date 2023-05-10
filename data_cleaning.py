@@ -145,13 +145,15 @@ class DataCleaning:
         user_data = user_data.dropna()
 
         # 2. remove lines with garbage 
-        mask = (user_data['date_of_birth'].apply(lambda x: False if x[0].isdigit() else True) & user_data['join_date'].apply(lambda x: False if x[0].isdigit() else True) & user_data['phone_number'].apply(lambda x: False if x[-1].isdigit() else True))
+        mask = (user_data['date_of_birth'].apply(lambda x: False if x[0].isdigit() else True) & 
+                user_data['join_date'].apply(lambda x: False if x[0].isdigit() else True) & 
+                user_data['phone_number'].apply(lambda x: False if x[-1].isdigit() else True))
         user_data = user_data.drop(user_data[mask].index)
-        mask = (user_data['date_of_birth'].apply(lambda x: False if x[0].isdigit() else True) | user_data['date_of_birth'].apply(lambda x: False if x[-1].isdigit() else True))
+        mask = (user_data['date_of_birth'].apply(lambda x: False if x[0].isdigit() else True) | 
+                user_data['date_of_birth'].apply(lambda x: False if x[-1].isdigit() else True))
         user_data = user_data.drop(user_data[mask].index)
 
-        # 3. change formatting of date_of_birth and join_date into YYYY-MM-DD 
-        #    and the type into a date type
+        # 3. change formatting of date_of_birth and join_date into YYYY-MM-DD and the type into a date type
         user_data['date_of_birth'] = user_data.apply(lambda row : fix_date0(row['date_of_birth']), axis = 1)
         user_data['date_of_birth'] = user_data.apply(lambda row : fix_date0(row['join_date']), axis = 1)
         user_data['date_of_birth'] = user_data.apply(lambda row : fix_date1(row['date_of_birth']), axis = 1)
@@ -162,14 +164,11 @@ class DataCleaning:
         # 4. replace the 6 incorrect country codes
         user_data.replace('GGB', 'GB', inplace=True)
 
-        # 5. verify country codes so that they are correct for the country 
-        #    mentioned in the column 'country'
+        # 5. verify country codes so that they are correct for the country mentioned in the column 'country'
         ###  (apparently there are no such errors)
 
-        # 6. change phone numbers into formatting +0012345678, where 00 is 
-        #    the country code and what follows is the area code and phone
-        #    number without spaces or parentheses; with 1 the leading 0 can
-        #    be omitted
+        # 6. change phone numbers into formatting +0012345678, where 00 is the country code and what follows is 
+        #    the area code and phone number without spaces or parentheses; with 1 the leading 0 can be omitted
         user_data['phone_number'] = user_data.apply(lambda row : fix_phone(row['phone_number'], row['country_code']), axis = 1)
 
         # 7. change carriage returns into commas in address
@@ -179,7 +178,6 @@ class DataCleaning:
         user_data = user_data.drop_duplicates()
 
         # 9. sort by the index column (not really needed, but maybe fun)
-        #clean_data = user_data #.sort_values(by = 'index')
         user_data = user_data.sort_values(by='index')
 
         return user_data
@@ -218,28 +216,20 @@ class DataCleaning:
         card_data = card_data.dropna()
 
         # 2. remove non-numeric characters from card_number
-        #card_data['card_number'] = card_data['card_number'].map(lambda x: ''.join([i for i in str(x) if i.isdigit()]))
-        #card_data['card_number'] = card_data['card_number'].str.replace(r'[^0-9]+', '')
         card_data['card_number'] = card_data.apply(lambda row: fix_cardno(row['card_number']), axis=1)
 
         # 3. change column type of card_number into number
-#        card_data[['card_number']] = card_data[['card_number']].apply(pd.to_numeric)
+        # card_data[['card_number']] = card_data[['card_number']].apply(pd.to_numeric)
 
         # 4. remove lines where card number < 1,000,000
-#        card_data = card_data.drop(card_data[card_data.card_number < 1000000].index)
+        # card_data = card_data.drop(card_data[card_data.card_number < 1000000].index)
 
         # 5. swap month/year in expiry_date, if month > 12 and year < 13
-        #    (assuming they are then in the wrong order), remove lines where
-        #    the formatting is not ##/##
+        #    (assuming they are then in the wrong order), remove lines where the formatting is not ##/##
         card_data = card_data[card_data.expiry_date.str.len() == 5]
         card_data['expiry_date'] = card_data.apply(lambda row: fix_expiry(row['expiry_date']), axis=1)
 
-        # at this point, let's convert expiry_date into %m/%Y
-#        card_data['expiry_date'] = card_data['expiry_date'].datetime.strftime('%m/%y')
-#        card_data['expiry_date'] = pd.to_datetime(card_data['expiry_date']).dt.date
-
-        # 6. change formatting of date_payment_confirmed into YYYY-MM-DD and 
-        #    the type into a date type
+        # 6. change formatting of date_payment_confirmed into YYYY-MM-DD and the type into a date type
         card_data['date_payment_confirmed'] = pd.to_datetime(card_data['date_payment_confirmed']).dt.date
 
         # 7. remove duplicate rows
@@ -277,8 +267,7 @@ class DataCleaning:
         # 5. fix index 31: staff_numbers = 'J78'  (apply fix to all rows)
         store_data['staff_numbers'] = store_data['staff_numbers'].map(lambda x: ''.join([i for i in x if i.isdigit()]))
 
-        # 6. change column type of longitude, latitude, staff_numbers into 
-        #    numbers
+        # 6. change column type of longitude, latitude, staff_numbers into numbers
         store_data[['longitude', 'latitude', 'staff_numbers']] = store_data[['longitude', 'latitude', 'staff_numbers']].apply(pd.to_numeric)
 
         # 7. correct continent names (remove 'ee')
@@ -286,10 +275,10 @@ class DataCleaning:
         store_data.replace('eeAmerica', 'America', inplace=True)
 
         # 8. move column latitude next to column longitude
-        store_data = store_data[['index', 'address', 'longitude', 'latitude', 'locality', 'store_code', 'staff_numbers', 'opening_date', 'store_type', 'country_code', 'continent']]
+        store_data = store_data[['index', 'address', 'longitude', 'latitude', 'locality', 
+                                 'store_code', 'staff_numbers', 'opening_date', 'store_type', 'country_code', 'continent']]
 
-        # 9. change formatting of opening_date into YYYY-MM-DD and the type 
-        #    into a date type
+        # 9. change formatting of opening_date into YYYY-MM-DD and the type into a date type
         store_data['opening_date'] = pd.to_datetime(store_data['opening_date']).dt.date
 
         # 10. change carriage returns into commas in address
@@ -299,13 +288,13 @@ class DataCleaning:
         store_data = store_data.drop_duplicates()
 
         # 12. restore n/a to row 48, the "web portal"
-#        replace_with_na_all(data = store_data, condition = 'longitude' == 0)
-#        replace_with_na_all(data = store_data, condition = 'latitude' == 0)
-#        replace_with_na_all(data = store_data, condition = 'address' == "online")
-#        replace_with_na_all(data = store_data, condition = 'locality' == "online")
+        # replace_with_na_all(data = store_data, condition = 'longitude' == 0)
+        # replace_with_na_all(data = store_data, condition = 'latitude' == 0)
+        # replace_with_na_all(data = store_data, condition = 'address' == "online")
+        # replace_with_na_all(data = store_data, condition = 'locality' == "online")
 
         # 13. sort by the index column (not really needed, but maybe fun)
-        #store_data = store_data.sort_values(by='index')
+        # store_data = store_data.sort_values(by='index')
 
         return store_data
     # end clean_store_data
@@ -330,10 +319,8 @@ class DataCleaning:
                     exit
                 # end if
             # end for
-            # print("Product weight: ", product_weight)
             prdvalue = y * float(product_weight[x:still_no+1])
             prdunit = str(product_weight[still_no+1:])
-            # print("Product value and unit: ", prdvalue, " ", prdunit)
             if ((prdunit == "l") or (prdunit == "kg")):
                 prdvalue = prdvalue
             elif ((prdunit == "ml") or (prdunit == "g")):
@@ -384,16 +371,18 @@ class DataCleaning:
         product_data['date_added'] = product_data.apply(lambda row: fix_date(row['date_added']), axis=1)
 
         # 3. remove lines with garbage 
-        mask = (product_data['date_added'].apply(lambda x: False if x[0].isdigit() else True) & product_data['product_price'].apply(lambda x: False if x[-1].isdigit() else True) & product_data['weight'].apply(lambda x: False if x[0].isdigit() else True))
+        mask = (product_data['date_added'].apply(lambda x: False if x[0].isdigit() else True) & 
+                product_data['product_price'].apply(lambda x: False if x[-1].isdigit() else True) & 
+                product_data['weight'].apply(lambda x: False if x[0].isdigit() else True))
         product_data = product_data.drop(product_data[mask].index)
-        mask = (product_data['date_added'].apply(lambda x: False if x[0].isdigit() else True) | product_data['date_added'].apply(lambda x: False if x[-1].isdigit() else True))
+        mask = (product_data['date_added'].apply(lambda x: False if x[0].isdigit() else True) | 
+                product_data['date_added'].apply(lambda x: False if x[-1].isdigit() else True))
         product_data = product_data.drop(product_data[mask].index)
 
         # 4. remove non-numeric characters from EAN
         product_data['EAN'] = product_data.apply(lambda row: fix_ean(row['EAN']), axis=1)
 
-        # 5. change formatting of date_added into YYYY-MM-DD and the type 
-        #    into a date type
+        # 5. change formatting of date_added into YYYY-MM-DD and the type into a date type
         product_data['date_added'] = pd.to_datetime(product_data['date_added']).dt.date
 
         # 6. fix product weights (in a separate method)
@@ -483,11 +472,16 @@ class DataCleaning:
         # ##:##:## substring in the 'timestamp' and drop all the other
         # characters. However, for the time being, let's skip this.
         try:
-            mask = (sales_data['timestamp'].apply(lambda x: False if x[0].isdigit() else True) | sales_data['timestamp'].apply(lambda x: False if x[-1].isdigit() else True) | sales_data['timestamp'].apply(lambda x: False if x[1].isdigit() else True) | sales_data['timestamp'].apply(lambda x: False if x[-2].isdigit() else True))
+            mask = (sales_data['timestamp'].apply(lambda x: False if x[0].isdigit() else True) | 
+                    sales_data['timestamp'].apply(lambda x: False if x[-1].isdigit() else True) | 
+                    sales_data['timestamp'].apply(lambda x: False if x[1].isdigit() else True) | 
+                    sales_data['timestamp'].apply(lambda x: False if x[-2].isdigit() else True))
             sales_data = sales_data.drop(sales_data[mask].index)
-            mask = (sales_data['year'].apply(lambda x: False if x[0].isdigit() else True) & sales_data['year'].apply(lambda x: False if x[-1].isdigit() else True))
+            mask = (sales_data['year'].apply(lambda x: False if x[0].isdigit() else True) & 
+                    sales_data['year'].apply(lambda x: False if x[-1].isdigit() else True))
             sales_data = sales_data.drop(sales_data[mask].index)
-            mask = (sales_data['year'].apply(lambda x: False if x>1900 else True) | sales_data['year'].apply(lambda x: False if not x=='' else True))
+            mask = (sales_data['year'].apply(lambda x: False if x>1900 else True) | 
+                    sales_data['year'].apply(lambda x: False if not x=='' else True))
             sales_data = sales_data.drop(sales_data[mask].index)
         except:
             print("Could not remove all lines with garbage succssfully.")
@@ -590,4 +584,27 @@ class DataCleaning:
 
 
      CAST(NULLIF(column, ’N/A’) AS FLOAT)   
+
+     
+        # 2. remove non-numeric characters from card_number
+        #card_data['card_number'] = card_data['card_number'].map(lambda x: ''.join([i for i in str(x) if i.isdigit()]))
+        #card_data['card_number'] = card_data['card_number'].str.replace(r'[^0-9]+', '')
+        card_data['card_number'] = card_data.apply(lambda row: fix_cardno(row['card_number']), axis=1)
+
+        # 3. change column type of card_number into number
+#        card_data[['card_number']] = card_data[['card_number']].apply(pd.to_numeric)
+
+        # 4. remove lines where card number < 1,000,000
+#        card_data = card_data.drop(card_data[card_data.card_number < 1000000].index)
+
+        # 5. swap month/year in expiry_date, if month > 12 and year < 13
+        #    (assuming they are then in the wrong order), remove lines where the formatting is not ##/##
+        card_data = card_data[card_data.expiry_date.str.len() == 5]
+        card_data['expiry_date'] = card_data.apply(lambda row: fix_expiry(row['expiry_date']), axis=1)
+
+        # at this point, let's convert expiry_date into %m/%Y
+#        card_data['expiry_date'] = card_data['expiry_date'].datetime.strftime('%m/%y')
+#        card_data['expiry_date'] = pd.to_datetime(card_data['expiry_date']).dt.date
+
+
 '''
