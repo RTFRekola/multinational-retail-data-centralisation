@@ -60,7 +60,7 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](data_extraction-2.png?raw=true "Read card data from a PDF file.")
 
-- in <i>data_cleaning</i>, created the method <i>clean_card_data</i>, which cleans the table with card data
+- in <i>data_cleaning.py</i>, created the method <i>clean_card_data</i>, which cleans the table with card data
     - remove rows with null values
     - remove non-numeric characters from card number
     - swap month and year in the expiration date, if they are in the wrong order, and remove the rows with incorrect formatting
@@ -69,7 +69,45 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](data_cleaning-2.png?raw=true "Clean the card data table.")
 
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the cleaned card data into the <i>sales_data</i> database as table <i>dim_card_details</i>
 
+![multinational-retail-data-centralisation](database_utils-4.png?raw=true "Write cleaned card data into sales_data as dim_card_details.")
+
+<b>Task 5</b>
+
+- in <i>data_extraction.py</i>, created the method <i>list_number_of_stores</i> to return the number of stores to extract
+- in <i>data_extraction.py</i>, created another method, <i>retrieve_stores_data</i>, which extracts one store at a time from an API connect point and put them into a Pandas DataFrame
+
+![multinational-retail-data-centralisation](data_extraction-3.png?raw=true "Return number of stores and extract their data.")
+
+- in <i>data_cleaning.py</i>, created the method <i>clean_store_data</i>, which cleans the table with store data
+    - remove unused column <i>lat</i>
+    - fix the online store's locality and address as "online" and longitude and latitude as "0"
+    - remove rows with all values as n/a
+    - remove rows where all values are nonsensical garbage
+    - fix staff numbers by omitting all non-numeric characters
+    - change column type of longitude, latitude, and staff_numbers into numerical values
+    . correct continent names (by removing "ee" in the beginning)
+    - move column <i>latitude</i> next to column <i>longitude</i>
+    - change various formattings of opening date into SI standard
+    - change carriage returns in addresses into commas
+    - remove duplicate rows
+
+![multinational-retail-data-centralisation](data_cleaning-3.png?raw=true "Clean the store data table.")
+
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the cleaned store data into the <i>sales_data</i> database as table <i>dim_store_details</i>
+
+![multinational-retail-data-centralisation](database_utils-5.png?raw=true "Write cleaned store data into sales_data as dim_store_details.")
+
+<b>Task 6</b>
+
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the cleaned card data into the <i>sales_data</i> database as table <i>dim_card_details</i>
+
+![multinational-retail-data-centralisation](database_utils-5.png?raw=true "Write cleaned card data into sales_data as dim_card_details.")
+
+<b>Task 5</b>
+
+- in 
 
 
 ## Milestone 3: Create the database schema.
