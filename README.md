@@ -101,7 +101,7 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 <b>Task 6</b>
 
-- in <i>data_extraction.py</i>, created the method <i>extract_from_s3 to download and extract the product data into a Pandas DataFrame
+- in <i>data_extraction.py</i>, created the method <i>extract_from_s3</i> to download and extract the product data into a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](data_extraction-4.png?raw=true "Download and extract product data.")
 
@@ -122,7 +122,37 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 <b>Task 7</b>
 
+- using earlier established <i>list_db_tables</i> found the name of the table with data on product orders and <i>read_rds_tables</i> to extract this data into a Pandas DataFrame
+- in <i>data_cleaning.py</i>, created the method <i>clean_orders_data</i> to clean the table with orders data
+    - removed columns first_name, last_name and 1
 
+![multinational-retail-data-centralisation](data_cleaning-5.png?raw=true "Clean the orders data table.")
+
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the orders data into the <i>sales_data</i> database as table <i>orders_table</i>
+
+![multinational-retail-data-centralisation](database_utils-7.png?raw=true "Write cleaned orders data into sales_data as orders_table.")
+
+<b>Task 8</b>
+
+- in <i>data_extraction.py</i>, created the method <i>extract_json_from_s3</i>, which extracts the sales date events into a Pandas DataFrame
+
+![multinational-retail-data-centralisation](data_extraction-5.png?raw=true "Download and extract sales date events data.")
+
+- in <i>data_cleaning.py<i>, created the method <i>clean_sales_data</i> to clean the table with sales date events
+    - remove rows with n/a in them
+    - convert written month names to numbers
+    - remove non-numeric charactes from year, month and day
+    - remove rows where all values are nonsensical garbage
+    - remove duplicate rows
+    - convert the timestamp into a time data format
+    - combine year, month and day into a date format date
+    - rearrange columns so that they are in the order or year, month, day; also make these integers
+
+![multinational-retail-data-centralisation](data_cleaning-6.png?raw=true "Clean the sales date events table.")
+
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the sales date events into the <i>sales_data</i> database as table <i>dim_date_times</i>
+
+![multinational-retail-data-centralisation](database_utils-8.png?raw=true "Write cleaned sales date events into sales_data as dim_date_times.")
 
 ## Milestone 3: Create the database schema.
 
