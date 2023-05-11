@@ -31,18 +31,20 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 ![multinational-retail-data-centralisation](data_extraction-1.png?raw=true "Read the desired database table.")
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_user_data</i>, which cleans the table with user data
---* remove rows with n/a in them
---* remove lines where all values are nonsensical garbage
---* change various formattings of birth date and joining date into SI standard
---* correct country codes
---* change phone numbers into international formatting with a leading plus sign (+) and without leading zero (0) in the area code; also convert typically American phone number extensions into formatting of " x 1234" at the end of the phone number
---* change carriage returns in addresses into commas
---* remove duplicate rows
---* sort the data by index column
+    - remove rows with n/a in them
+    - remove lines where all values are nonsensical garbage
+    - change various formattings of birth date and joining date into SI standard
+    - correct country codes
+    - change phone numbers into international formatting with a leading plus sign (+) and without leading zero (0) in the area code; also convert typically American phone number extensions into formatting of " x 1234" at the end of the phone number
+    - change carriage returns in addresses into commas
+    - remove duplicate rows
+    - sort the data by index column
 
 ![multinational-retail-data-centralisation](data_cleaning-1.png?raw=true "Clean the user data table.")
 
 - in <i>database_utils.py</i>, created the method <i>upload_to_db</i>, which writes the cleaned user data table into the <i>sales_data</i> database as table <i>dim_users</i>
+
+![multinational-retail-data-centralisation](database_utils-3.png?raw=true "Write cleaned user data into sales_data as dim_users.")
 
 
 ## Milestone 3: Create the database schema.
