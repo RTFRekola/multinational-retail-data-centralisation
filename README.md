@@ -15,9 +15,17 @@ This consists of getting the Git and GitHub going.
 Besides the installation of PostgreSQL and Pgadmin, an SQL database is created to store the extracted data. Tools are created to extract and clean various kinds of data. 
 
 - prerequisites discussed VSCode, Python programming, Pandas dataframes, AWS, APIs and SQL
+
+<b>Task 1</b>
+
 - initialised the database "sales_data" in pgAdmin4
+
+<b>Task 2</b>
+
 - created files <i>data_extraction.py</i>, <i>database_utils.py</i> and <i>data_cleaning.py</i> to store the code in
 - created file <i>main_programme.py</i> to tie the code in the aforementioned files together
+
+<b>Task 3</b>
 
 - in <i>database_utils.py</i>, created the method <i>read_db_creds</i>, which reads credentials yaml file
 - in <i>database_utils.py</i>, created the method <i>init_db_engine</i>, to read the credentials and initialise database engine
@@ -45,6 +53,23 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 - in <i>database_utils.py</i>, created the method <i>upload_to_db</i>, which writes the cleaned user data table into the <i>sales_data</i> database as table <i>dim_users</i>
 
 ![multinational-retail-data-centralisation](database_utils-3.png?raw=true "Write cleaned user data into sales_data as dim_users.")
+
+<b>Task 4</b>
+
+- in <i>data_extraction.py</i>, created the method <i>retrieve_pdf_data</i>, which reads card data from a PDF file into a Pandas DataFrame
+
+![multinational-retail-data-centralisation](data_extraction-2.png?raw=true "Read card data from a PDF file.")
+
+- in <i>data_cleaning</i>, created the method <i>clean_card_data</i>, which cleans the table with card data
+    - remove rows with null values
+    - remove non-numeric characters from card number
+    - swap month and year in the expiration date, if they are in the wrong order, and remove the rows with incorrect formatting
+    - change various formattings of confirmed payment date into SI standard
+    - remove duplicate rows
+
+![multinational-retail-data-centralisation](data_cleaning-2.png?raw=true "Clean the card data table.")
+
+
 
 
 ## Milestone 3: Create the database schema.
