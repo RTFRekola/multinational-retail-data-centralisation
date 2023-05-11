@@ -138,7 +138,7 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](data_extraction-5.png?raw=true "Download and extract sales date events data.")
 
-- in <i>data_cleaning.py<i>, created the method <i>clean_sales_data</i> to clean the table with sales date events
+- in <i>data_cleaning.py</i>, created the method <i>clean_sales_data</i> to clean the table with sales date events
     - remove rows with n/a in them
     - convert written month names to numbers
     - remove non-numeric charactes from year, month and day
