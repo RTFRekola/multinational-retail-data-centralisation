@@ -31,14 +31,14 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 ![multinational-retail-data-centralisation](data_extraction-1.png?raw=true "Read the desired database table.")
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_user_data</i>, which cleans the table with user data
--- remove rows with n/a in them
--- remove lines where all values are nonsensical garbage
--- change various formattings of birth date and joining date into SI standard
--- correct country codes
--- change phone numbers into international formatting with a leading plus sign (+) and without leading zero (0) in the area code; also convert typically American phone number extensions into formatting of " x 1234" at the end of the phone number
--- change carriage returns in addresses into commas
--- remove duplicate rows
--- sort the data by index column
+--* remove rows with n/a in them
+--* remove lines where all values are nonsensical garbage
+--* change various formattings of birth date and joining date into SI standard
+--* correct country codes
+--* change phone numbers into international formatting with a leading plus sign (+) and without leading zero (0) in the area code; also convert typically American phone number extensions into formatting of " x 1234" at the end of the phone number
+--* change carriage returns in addresses into commas
+--* remove duplicate rows
+--* sort the data by index column
 
 ![multinational-retail-data-centralisation](data_cleaning-1.png?raw=true "Clean the user data table.")
 
