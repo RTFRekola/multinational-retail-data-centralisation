@@ -101,13 +101,27 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 <b>Task 6</b>
 
-- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the cleaned card data into the <i>sales_data</i> database as table <i>dim_card_details</i>
+- in <i>data_extraction.py</i>, created the method <i>extract_from_s3 to download and extract the product data into a Pandas DataFrame
 
-![multinational-retail-data-centralisation](database_utils-5.png?raw=true "Write cleaned card data into sales_data as dim_card_details.")
+![multinational-retail-data-centralisation](data_extraction-4.png?raw=true "Download and extract product data.")
 
-<b>Task 5</b>
+- in <i>data_cleaning.py</i>, created the method <i>convert_product_weights</i> to clean all weight values and harmonise them to be in <b>kg</b>
+- in <i>data_cleaning.py</i>, created another method, <i>clean_product_data</i>, which cleans the table with product data
+    - remove rows with null values
+    - fix non-standard verbal date values into fully numerical ones
+    - remove rows where all values are nonsensical garbage
+    - remove non-numeric characters from EAN
+    - change various formattings of "date_added" into SI standard
+    - sort the data by index column
 
-- in 
+![multinational-retail-data-centralisation](data_cleaning-4.png?raw=true "Clean the store data table.")
+
+- in <i>database_utils.py</i>, updated the method <i>upload_to_db</i> in order to write the cleaned product data into the <i>sales_data</i> database as table <i>dim_products</i>
+
+![multinational-retail-data-centralisation](database_utils-6.png?raw=true "Write cleaned product data into sales_data as dim_products.")
+
+<b>Task 7</b>
+
 
 
 ## Milestone 3: Create the database schema.
