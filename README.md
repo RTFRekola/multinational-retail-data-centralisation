@@ -1,6 +1,6 @@
 # multinational-retail-data-centralisation
 
-You work for a multinational company that sells various goods across the globe. Currently, their sales data is spread across many different data sources making it not easily accessible or analysable by current members of the team. In an effort to become more data-driven, your organisation would like to make its sales data accessible from one centralised location. Your first goal will be to produce a system that stores the current company data in a database so that it's accessed from one centralised location and acts as a single source of truth for sales data. You will then query the database to get up-to-date metrics for the business. 
+<i>You work for a multinational company that sells various goods across the globe. Currently, their sales data is spread across many different data sources making it not easily accessible or analysable by current members of the team. In an effort to become more data-driven, your organisation would like to make its sales data accessible from one centralised location. Your first goal will be to produce a system that stores the current company data in a database so that it's accessed from one centralised location and acts as a single source of truth for sales data. You will then query the database to get up-to-date metrics for the business.</i>
 
 ## Milestone 1: Set up the environment.
 
@@ -160,7 +160,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 <b>Task 1</b>
 
-- in <b><i>pgAdmin 4</i></b>, found the maximum length of values in columns card_number, store_code and product_code
+- in <b><i>pgAdmin 4</i></b>, found the maximum length of values in columns "card_number", "store_code" and "product_code" using a command such as this:
 
 ![multinational-retail-data-centralisation](schema-1.png?raw=true "Found the maximum length of values in a column.")
 
@@ -168,55 +168,55 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-2.png?raw=true "Data types of columns in orders_table.")
 
-- table "orders_table" after the change
+- table <i>orders_table</i> after the change
 
 ![multinational-retail-data-centralisation](orders_table.png?raw=true "orders_table")
 
-- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_users_table</i>
-
 <b>Task 2</b>
 
-![multinational-retail-data-centralisation](schema-3.png?raw=true "Data types of columns in dim_users_table.")
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_users_table</i> (the commented ones were already done during table cleaning)
 
-- table "dim_users_table" after the change
+![multinational-retail-data-centralisation](schema-3.png?raw=true "Data types of columns in dim_users.")
 
-![multinational-retail-data-centralisation](dim_users_table.png?raw=true "dim_users_table")
+- table <i>dim_users</i> after the change
+
+![multinational-retail-data-centralisation](dim_users.png?raw=true "dim_users")
 
 <b>Task 3</b>
 
-- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_store_details</i>
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_store_details</i> (the commented one was already done during table cleaning)
 
 ![multinational-retail-data-centralisation](schema-4.png?raw=true "Data types of columns in dim_store_details.")
 
-- table "dim_store_details" after the change
+- table <i>dim_store_details</i> after the change
 
 ![multinational-retail-data-centralisation](dim_store_details.png?raw=true "dim_store_details")
 
 <b>Task 4</b>
 
-- in <b><i>pgAdmin 4</i></b>, removed the currency symbol (£) from the column product_price in <i>dim_products</i>
+- in <b><i>pgAdmin 4</i></b>, removed the currency symbol (£) from the column <i>product_price</i> in table <i>dim_products</i>
 
 ![multinational-retail-data-centralisation](schema-5.png?raw=true "Remove £ character from product_price in dim_products.")
 
-- in <b><i>pgAdmin 4</i></b>, added a new column called "weight_class" into <i>dim_products</i>
+- in <b><i>pgAdmin 4</i></b>, added a new column called <i>weight_class</i> into table <i>dim_products</i>
 
 ![multinational-retail-data-centralisation](schema-6.png?raw=true "Added column weight_class into dim_products.")
 
-- in <b><i>pgAdmin 4</i></b>, populated the column weight_class with human-readable version of the weight in column weight_class in <i>dim_products</i>
+- in <b><i>pgAdmin 4</i></b>, populated the column <i>weight_class</i> with human-readable version of the weight in table <i>dim_products</i>
 
 ![multinational-retail-data-centralisation](schema-7.png?raw=true "Added human-readable version of weight into weight_class in dim_products.")
 
 <b>Task 5</b>
 
-- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_products</i>
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_products</i> (the commented ones were already done during table cleaning)
 
 ![multinational-retail-data-centralisation](schema-8.png?raw=true "Data types of columns in dim_products.")
 
-- in <b><i>pgAdmin 4</i></b>, created a new column called "still_available" and populated it with boolean values reflecting values in the column "removed" in <i>dim_store_details</i>; finally deleted the column "removed"
+- in <b><i>pgAdmin 4</i></b>, created a new column called <i>still_available</i> and populated it with boolean values reflecting values in the column <i>removed</i> in table <i>dim_store_details</i>; finally deleted the column <i>removed</i>
 
 ![multinational-retail-data-centralisation](schema-9.png?raw=true "Data types of columns in dim_store_details.")
 
-- table "dim_products" after the changes
+- table <i>dim_products</i> after the changes
 
 ![multinational-retail-data-centralisation](dim_products.png?raw=true "dim_products")
 
@@ -226,33 +226,33 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-10.png?raw=true "Data types of columns in dim_date_times.")
 
-- table "dim_date_times" after the change
+- table <i>dim_date_times</i> after the change
 
 ![multinational-retail-data-centralisation](dim_date_times.png?raw=true "dim_date_times")
 
 <b>Task 7</b>
 
-- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_catd_details</i>
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_catd_details</i> (the commented one was already done during table cleaning)
 
 ![multinational-retail-data-centralisation](schema-11.png?raw=true "Data types of columns in dim_card_details.")
 
-- table "dim_card_details" after the change
+- table <i>dim_card_details</i> after the change
 
 ![multinational-retail-data-centralisation](dim_card_details.png?raw=true "dim_card_details")
 
 <b>Task 8</b>
 
-The task description states that the columns in the tables that begin with "dim" should be updated with a primary key that matches the same column in the orders_table. This was done with the following pgAdmin 4 commands:
+The task description states that the columns in the tables that begin with "dim" should be updated with a primary key that matches the same column in the <i>orders_table</i>. This was done with the following pgAdmin 4 commands:
 
 ![multinational-retail-data-centralisation](schema-12.png?raw=true "Updating primary keys in the dim tables.")
 
 <b>Task 9</b>
 
-The task description states that foreign keys should be created in the orders_table to reference the primary keys in the other tables. This was done to four out of five tables as follows:
+The task description states that foreign keys should be created in the <i>orders_table</i> to reference the primary keys in the other tables. This was done to four out of five tables as follows:
 
 ![multinational-retail-data-centralisation](schema-13.png?raw=true "Adding foreign keys to the orders_table.")
 
-However, the table dim_users was missing a user_uuid value that was present in orders_table. In fact, the user_uuid value was missing also in the raw table that had not been cleaned or modified in any way. Therefore, this invoked an error:
+However, the table <i>dim_users</i> was missing one or more "user_uuid" values that were present in <i>orders_table</i>. In fact, the "user_uuid values were missing also in the raw table that had not been cleaned or modified in any way. Therefore, the following command invoked an error:
 
 ![multinational-retail-data-centralisation](schema-14.png?raw=true "Failing to add one more foreign key to the orders_table.")
 
@@ -262,7 +262,7 @@ The problem was solved by doing this in pgAdmin 4:
 
 ## Milestone 4: Querying the data.
 
-Milestone description: "Your boss is excited that you now have the schema for the database and all the sales data is in one location. Since you've done such a great job he would like you to get some up-to-date metrics from the data. The business can then start making more data-driven decisions and get a better understanding of its sales. In this milestone, you will be tasked with answering business questions and extracting the data from the database using SQL."
+Milestone description: <i>"Your boss is excited that you now have the schema for the database and all the sales data is in one location. Since you've done such a great job he would like you to get some up-to-date metrics from the data. The business can then start making more data-driven decisions and get a better understanding of its sales. In this milestone, you will be tasked with answering business questions and extracting the data from the database using SQL."</i>
 
 <b>Task 1</b>
 
