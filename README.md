@@ -14,7 +14,7 @@ This consists of getting the Git and GitHub going.
 
 Besides the installation of PostgreSQL and Pgadmin, an SQL database is created to store the extracted data. Tools are created to extract and clean various kinds of data. 
 
-- prerequisites discussed VSCode, Python programming, Pandas dataframes, AWS, APIs and SQL
+- prerequisites discussed VSCode, Python programming, Pandas DataFrames, AWS, APIs and SQL
 
 <b>Task 1</b>
 
@@ -156,4 +156,168 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ## Milestone 3: Create the database schema.
 
+Tables stored in the pgAdmin database <i>sales_data</i> are modified for a better data retrieval process further on. This involves changing the data types of columns in all tables and changing the structure and contents of tables in some rare cases. 
+
+<b>Task 1</b>
+
+- in <b><i>pgAdmin 4</i></b>, found the maximum length of values in columns card_number, store_code and product_code
+
+![multinational-retail-data-centralisation](schema-1.png?raw=true "Found the maximum length of values in a column.")
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>orders_table</i>
+
+![multinational-retail-data-centralisation](schema-2.png?raw=true "Data types of columns in orders_table.")
+
+- table "orders_table" after the change
+
+![multinational-retail-data-centralisation](orders_table.png?raw=true "orders_table")
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_users_table</i>
+
+<b>Task 2</b>
+
+![multinational-retail-data-centralisation](schema-3.png?raw=true "Data types of columns in dim_users_table.")
+
+- table "dim_users_table" after the change
+
+![multinational-retail-data-centralisation](dim_users_table.png?raw=true "dim_users_table")
+
+<b>Task 3</b>
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_store_details</i>
+
+![multinational-retail-data-centralisation](schema-4.png?raw=true "Data types of columns in dim_store_details.")
+
+- table "dim_store_details" after the change
+
+![multinational-retail-data-centralisation](dim_store_details.png?raw=true "dim_store_details")
+
+<b>Task 4</b>
+
+- in <b><i>pgAdmin 4</i></b>, removed the currency symbol (£) from the column product_price in <i>dim_products</i>
+
+![multinational-retail-data-centralisation](schema-5.png?raw=true "Remove £ character from product_price in dim_products.")
+
+- in <b><i>pgAdmin 4</i></b>, added a new column called "weight_class" into <i>dim_products</i>
+
+![multinational-retail-data-centralisation](schema-6.png?raw=true "Added column weight_class into dim_products.")
+
+- in <b><i>pgAdmin 4</i></b>, populated the column weight_class with human-readable version of the weight in column weight_class in <i>dim_products</i>
+
+![multinational-retail-data-centralisation](schema-7.png?raw=true "Added human-readable version of weight into weight_class in dim_products.")
+
+<b>Task 5</b>
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_products</i>
+
+![multinational-retail-data-centralisation](schema-8.png?raw=true "Data types of columns in dim_products.")
+
+- in <b><i>pgAdmin 4</i></b>, created a new column called "still_available" and populated it with boolean values reflecting values in the column "removed" in <i>dim_store_details</i>; finally deleted the column "removed"
+
+![multinational-retail-data-centralisation](schema-9.png?raw=true "Data types of columns in dim_store_details.")
+
+- table "dim_products" after the changes
+
+![multinational-retail-data-centralisation](dim_products.png?raw=true "dim_products")
+
+<b>Task 6</b>
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_date_times</i>
+
+![multinational-retail-data-centralisation](schema-10.png?raw=true "Data types of columns in dim_date_times.")
+
+- table "dim_date_times" after the change
+
+![multinational-retail-data-centralisation](dim_date_times.png?raw=true "dim_date_times")
+
+<b>Task 7</b>
+
+- in <b><i>pgAdmin 4</i></b>, changed data types of columns in <i>dim_catd_details</i>
+
+![multinational-retail-data-centralisation](schema-11.png?raw=true "Data types of columns in dim_card_details.")
+
+- table "dim_card_details" after the change
+
+![multinational-retail-data-centralisation](dim_card_details.png?raw=true "dim_card_details")
+
+<b>Task 8</b>
+
+The task description states that the columns in the tables that begin with "dim" should be updated with a primary key that matches the same column in the orders_table. This was done with the following pgAdmin 4 commands:
+
+![multinational-retail-data-centralisation](schema-12.png?raw=true "Updating primary keys in the dim tables.")
+
+<b>Task 9</b>
+
+The task description states that foreign keys should be created in the orders_table to reference the primary keys in the other tables. This was done to four out of five tables as follows:
+
+![multinational-retail-data-centralisation](schema-13.png?raw=true "Adding foreign keys to the orders_table.")
+
+However, the table dim_users was missing a user_uuid value that was present in orders_table. In fact, the user_uuid value was missing also in the raw table that had not been cleaned or modified in any way. Therefore, this invoked an error:
+
+![multinational-retail-data-centralisation](schema-14.png?raw=true "Failing to add one more foreign key to the orders_table.")
+
+The problem was solved by doing this in pgAdmin 4: 
+
+![multinational-retail-data-centralisation](schema-15.png?raw=true "Solving the problem of a missing user_uiid and adding one more foreign key to the orders_table.")
+
 ## Milestone 4: Querying the data.
+
+Milestone description: "Your boss is excited that you now have the schema for the database and all the sales data is in one location. Since you've done such a great job he would like you to get some up-to-date metrics from the data. The business can then start making more data-driven decisions and get a better understanding of its sales. In this milestone, you will be tasked with answering business questions and extracting the data from the database using SQL."
+
+<b>Task 1</b>
+
+Find how many stores are in each of the countries the business operates in. 
+
+![multinational-retail-data-centralisation](result-1.png?raw=true "Number of stores in different countries.")
+
+<b>Task 2</b>
+
+Find the number of stores in the seven locations with the most.
+
+![multinational-retail-data-centralisation](result-2.png?raw=true "Number of stores in different locations.")
+
+<b>Task 3</b>
+
+Find the cost of sales in the six months with the most.
+
+![multinational-retail-data-centralisation](result-3.png?raw=true "Cost of sales in different months.")
+
+<b>Task 4</b>
+
+As preparation for the task, another operation was done to create a new column for whether stores are in the web or offline: 
+
+![multinational-retail-data-centralisation](schema-16.png?raw=true "Created a column for web or offshore identification.")
+
+Find the number of sales between online (web) or offline stores.
+
+![multinational-retail-data-centralisation](result-4.png?raw=true "Number of sales between web and offline stores.")
+
+<b>Task 5</b>
+
+Find the total sales and fraction of the grand total for each store type.
+
+![multinational-retail-data-centralisation](result-5.png?raw=true "Total sales and fraction of grand total per store type.")
+
+<b>Task 6</b>
+
+Find the ten months with the highest sales historically.
+
+![multinational-retail-data-centralisation](result-6.png?raw=true "The months with highest sales.")
+
+<b>Task 7</b>
+
+Find the number of staff in each country. 
+
+![multinational-retail-data-centralisation](result-7.png?raw=true "Number of staff in each country.")
+
+<b>Task 8</b>
+
+Find  the total sales in different store types in Germany.
+
+![multinational-retail-data-centralisation](result-8.png?raw=true "Total sales per store type in Germany.")
+
+<b>Task 9</b>
+
+Find the average time between sales in each year. 
+
+![multinational-retail-data-centralisation](result-9.png?raw=true "Average time between sales per year.")
