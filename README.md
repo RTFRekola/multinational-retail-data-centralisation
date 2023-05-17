@@ -88,10 +88,14 @@ The card data contained inconsistent data and erroneous values, which needed to 
 
 <b>Task 5</b>
 
+The data on the stores of the business is stored in AWS. In order to extract the data, the number of stores was needed first. With the number of stores, their data was read into a table one store at a time. 
+
 - in <i>data_extraction.py</i>, created the method <i>list_number_of_stores</i> to return the number of stores to extract
-- in <i>data_extraction.py</i>, created another method, <i>retrieve_stores_data</i>, which extracts one store at a time from an API connect point and put them into a Pandas DataFrame
+- in <i>data_extraction.py</i>, created another method, <i>retrieve_stores_data</i>, which extracts one store at a time from an API connect point and this is then added as a new row in a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](data_extraction-3.png?raw=true "Return number of stores and extract their data.")
+
+The data on the stores had the usual mix of empty and garbage lines, varying date formatting and small errors in the data values. These were corrected together with removing an unused column and rearranging the columns into a more logical order. 
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_store_data</i>, which cleans the table with store data
     - remove unused column <i>lat</i>
@@ -114,9 +118,13 @@ The card data contained inconsistent data and erroneous values, which needed to 
 
 <b>Task 6</b>
 
+The information on the products the company sells is stored in CSV format in an S3 bucket in AWS. It was imported with Python package boto3 into a Pandas DataFrame. 
+
 - in <i>data_extraction.py</i>, created the method <i>extract_from_s3</i> to download and extract the product data into a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](data_extraction-4.png?raw=true "Download and extract product data.")
+
+The weights of the products were given in different units. The units were harmonised and those originally given as volumes were converted into approximate weights. Additionally the dates were converted into SI standard and other regular data cleaning done as listed below. 
 
 - in <i>data_cleaning.py</i>, created the method <i>convert_product_weights</i> to clean all weight values and harmonise them to be in <b>kg</b>
 - in <i>data_cleaning.py</i>, created another method, <i>clean_product_data</i>, which cleans the table with product data
@@ -135,6 +143,8 @@ The card data contained inconsistent data and erroneous values, which needed to 
 
 <b>Task 7</b>
 
+Data on all the orders the company has processed is stored in an AWS database in the cloud. Similar to the approach to read in the user data in task 3, the data on the orders was read into a table. The table had unnecessary columns, which were removed. 
+
 - using earlier established <i>list_db_tables</i> found the name of the table with data on product orders and <i>read_rds_tables</i> to extract this data into a Pandas DataFrame
 - in <i>data_cleaning.py</i>, created the method <i>clean_orders_data</i> to clean the table with orders data
     - removed columns first_name, last_name and 1
@@ -147,9 +157,13 @@ The card data contained inconsistent data and erroneous values, which needed to 
 
 <b>Task 8</b>
 
+The information on the timing of each sale the company has made is stored in a JSON file in an S3 bucket in AWS. It is imported with Python package boto3 into a Pandas DataFrame. 
+
 - in <i>data_extraction.py</i>, created the method <i>extract_json_from_s3</i>, which extracts the sales date events into a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](data_extraction-5.png?raw=true "Download and extract sales date events data.")
+
+Normal data cleaning was done, especially making sure the dates were following numerical SI standard, and columns rearranged in a more logical order. 
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_sales_data</i> to clean the table with sales date events
     - remove rows with n/a in them
@@ -181,7 +195,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-2.png?raw=true "Data types of columns in orders_table.")
 
-- table <i>orders_table</i> after the change
+- table <b><i>orders_table</i</b> after the change
 
 ![multinational-retail-data-centralisation](orders_table.png?raw=true "orders_table")
 
@@ -191,7 +205,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-3.png?raw=true "Data types of columns in dim_users.")
 
-- table <i>dim_users</i> after the change
+- table <b><i>dim_users</i></b> after the change
 
 ![multinational-retail-data-centralisation](dim_users.png?raw=true "dim_users")
 
@@ -201,7 +215,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-4.png?raw=true "Data types of columns in dim_store_details.")
 
-- table <i>dim_store_details</i> after the change
+- table <b><i>dim_store_details</i></b> after the change
 
 ![multinational-retail-data-centralisation](dim_store_details.png?raw=true "dim_store_details")
 
@@ -229,7 +243,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-9.png?raw=true "Data types of columns in dim_store_details.")
 
-- table <i>dim_products</i> after the changes
+- table <b><i>dim_products</i></b> after the changes
 
 ![multinational-retail-data-centralisation](dim_products.png?raw=true "dim_products")
 
@@ -239,7 +253,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-10.png?raw=true "Data types of columns in dim_date_times.")
 
-- table <i>dim_date_times</i> after the change
+- table <b><i>dim_date_times</i></b> after the change
 
 ![multinational-retail-data-centralisation](dim_date_times.png?raw=true "dim_date_times")
 
@@ -249,33 +263,33 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-11.png?raw=true "Data types of columns in dim_card_details.")
 
-- table <i>dim_card_details</i> after the change
+- table <b><i>dim_card_details</i></b> after the change
 
 ![multinational-retail-data-centralisation](dim_card_details.png?raw=true "dim_card_details")
 
 <b>Task 8</b>
 
-The task description states that the columns in the tables that begin with "dim" should be updated with a primary key that matches the same column in the <i>orders_table</i>. This was done with the following pgAdmin 4 commands:
+Columns in the tables that begin with "dim" were updated with a primary key that matches the same column in the <i>orders_table</i>. This was done with the following <i>pgAdmin 4</i> commands:
 
 ![multinational-retail-data-centralisation](schema-12.png?raw=true "Updating primary keys in the dim tables.")
 
 <b>Task 9</b>
 
-The task description states that foreign keys should be created in the <i>orders_table</i> to reference the primary keys in the other tables. This was done to four out of five tables as follows:
+Foreign keys were created in the <i>orders_table</i> to reference the primary keys in the other tables. This was done to four out of five tables as follows:
 
 ![multinational-retail-data-centralisation](schema-13.png?raw=true "Adding foreign keys to the orders_table.")
 
-However, the table <i>dim_users</i> was missing one or more "user_uuid" values that were present in <i>orders_table</i>. In fact, the "user_uuid values were missing also in the raw table that had not been cleaned or modified in any way. Therefore, the following command invoked an error:
+However, the table <i>dim_users</i> was missing one or more "user_uuid" values that were present in <i>orders_table</i>. In fact, the "user_uuid" values were missing also in the raw table that had not been cleaned or modified in any way. Therefore, the following command invoked an error:
 
 ![multinational-retail-data-centralisation](schema-14.png?raw=true "Failing to add one more foreign key to the orders_table.")
 
-The problem was solved by doing this in pgAdmin 4: 
+The problem was solved by doing this in <i>pgAdmin 4</i>: 
 
 ![multinational-retail-data-centralisation](schema-15.png?raw=true "Solving the problem of a missing user_uiid and adding one more foreign key to the orders_table.")
 
 ## Querying the data.
 
-Milestone description: <i>"Your boss is excited that you now have the schema for the database and all the sales data is in one location. Since you've done such a great job he would like you to get some up-to-date metrics from the data. The business can then start making more data-driven decisions and get a better understanding of its sales. In this milestone, you will be tasked with answering business questions and extracting the data from the database using SQL."</i>
+The schema now exists for the database and all the sales data is in one location. In order for the business to start making more data-driven decisions and get a better understanding of its sales, a number of SQL queries was made from the database in <i>pgAdmin 4</i>.
 
 <b>Task 1</b>
 
@@ -283,17 +297,23 @@ Find how many stores are in each of the countries the business operates in.
 
 ![multinational-retail-data-centralisation](result-1.png?raw=true "Number of stores in different countries.")
 
+We found that out of 440 stores, 265 were in the United Kingdom (GB = Great Britain), 141 were in Germany (DE = Deutschland), and 34 were in the United States of America (US = United States).
+
 <b>Task 2</b>
 
 Find the number of stores in the seven locations with the most.
 
 ![multinational-retail-data-centralisation](result-2.png?raw=true "Number of stores in different locations.")
 
+The localities with most stores were Chapletown with 14 stores, Belper with 13 stores, Bushley with 12 stores and Exeter, High Wycombe, Arbroath and Rutherglen with either 11 or 10 stores each. These may be high figures for a single locality and the business may consider merging some of them together and perhaps opening new ones in localities with fewer or none.
+
 <b>Task 3</b>
 
 Find the cost of sales in the six months with the most.
 
 ![multinational-retail-data-centralisation](result-3.png?raw=true "Cost of sales in different months.")
+
+August was found to be the best month for sales, with £ 673295.68 as the total, followed by January with £ 668041.45 and October with £ 657335.84.
 
 <b>Task 4</b>
 
@@ -305,11 +325,15 @@ Find the number of sales between online (web) or offline stores.
 
 ![multinational-retail-data-centralisation](result-4.png?raw=true "Number of sales between web and offline stores.")
 
+It was found that roughly one fifth of the sales were made online (at 26935 sales and 107660 products) and the rest in all of the physical stores (combined at 93112 sales and 373821 products). Based on these figures it seems there may be potential to increase online sales. 
+
 <b>Task 5</b>
 
 Find the total sales and fraction of the grand total for each store type.
 
 ![multinational-retail-data-centralisation](result-5.png?raw=true "Total sales and fraction of grand total per store type.")
+
+Local stores made almost 45% of the sales at £ 3438248.90, with the web portal at half of this at £ 1725401.36. Super stores were next at £ 1223864.96, nearly 16% of the total sales. Mall kiosks and outlest garnered sales of £ 698403.72 and 631661.12, both a little less than 10% of the total sales. 
 
 <b>Task 6</b>
 
@@ -317,20 +341,28 @@ Find the ten months with the highest sales historically.
 
 ![multinational-retail-data-centralisation](result-6.png?raw=true "The months with highest sales.")
 
+In order to establish a possible trend of sales throughout the past years, the months with the highest sales were listed, but no apparent trend was found. The best selling month was March 1994 (at £ 27936.77) followed by January 2019 (at £ 27356.14) and August 2008 (at £ 27091.67).
+
 <b>Task 7</b>
 
 Find the number of staff in each country. 
 
 ![multinational-retail-data-centralisation](result-7.png?raw=true "Number of staff in each country.")
 
+It was found that the staff in the United Kingdom is 13307, Germany 6123 and the United States 1384. 
+
 <b>Task 8</b>
 
-Find  the total sales in different store types in Germany.
+Find the total sales in different store types in Germany.
 
 ![multinational-retail-data-centralisation](result-8.png?raw=true "Total sales per store type in Germany.")
+
+Concentrating especially in the German market, outlets are selling the least at £ 198369.88, and mall kiosks the second least at £ 247543.27. The second best were super stores with sales of £ 384575.06 and the best local stores with sales of $ 1109135.96. 
 
 <b>Task 9</b>
 
 Find the average time between sales in each year. 
 
 ![multinational-retail-data-centralisation](result-9.png?raw=true "Average time between sales per year.")
+
+It was found that the time taken between each sale was a little over two hours, with no clear trend of annual development (e.g. the latest - 2022 - and the second year -1993 - of operation are both in the four slowest selling years). 
