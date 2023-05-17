@@ -195,7 +195,7 @@ Tables stored in the pgAdmin database <i>sales_data</i> are modified for a bette
 
 ![multinational-retail-data-centralisation](schema-2.png?raw=true "Data types of columns in orders_table.")
 
-- table <b><i>orders_table</i</b> after the change
+- table <b><i>orders_table</i></b> after the change
 
 ![multinational-retail-data-centralisation](orders_table.png?raw=true "orders_table")
 
