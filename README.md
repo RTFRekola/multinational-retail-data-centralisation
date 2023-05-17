@@ -2,19 +2,19 @@
 
 <i>You work for a multinational company that sells various goods across the globe. Currently, their sales data is spread across many different data sources making it not easily accessible or analysable by current members of the team. In an effort to become more data-driven, your organisation would like to make its sales data accessible from one centralised location. Your first goal will be to produce a system that stores the current company data in a database so that it's accessed from one centralised location and acts as a single source of truth for sales data. You will then query the database to get up-to-date metrics for the business.</i>
 
-## Milestone 1: Set up the environment.
+## Set up the environment.
 
 This consists of getting the Git and GitHub going. 
 
-- prerequisites discussed the use of command line, file operations and Git/GitHub
+- familiarised self with the use of command line, file operations and Git/GitHub
 - created a new repository in GitHub called multinational-retail-data-centralisation
 - added the URL for the remote repository where to push the local repository
 
-## Milestone 2: Extract and clean the data from the data sources. 
+## Extract and clean the data from the data sources. 
 
 Besides the installation of PostgreSQL and Pgadmin, an SQL database is created to store the extracted data. Tools are created to extract and clean various kinds of data. 
 
-- prerequisites discussed VSCode, Python programming, Pandas DataFrames, AWS, APIs and SQL
+- familiarised self with VSCode, Python programming, Pandas DataFrames, AWS, APIs and SQL
 
 <b>Task 1</b>
 
@@ -22,10 +22,15 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 <b>Task 2</b>
 
-- created files <i>data_extraction.py</i>, <i>database_utils.py</i> and <i>data_cleaning.py</i> to store the code in
-- created file <i>main_programme.py</i> to tie the code in the aforementioned files together
+- created three Python files for the code: <i>data_extraction.py</i>, <i>database_utils.py</i> and <i>data_cleaning.py</i>
+    - data_extraction.py contains a class, DataExtractor, which will be used to extract data from different data sources
+    - data_cleaning.py contains a class, DataCleaning, which will be used to clean data acquired with DataExtractor
+    - database_utils.py contains a class, DatabaseConnector, which will be used to connect with and upload data to the database
+- created file <i>main_programme.py</i> to tie together the code in the aforementioned files
 
 <b>Task 3</b>
+
+The historical data of users is stored in an AWS database in the cloud. First a yaml file was created to contain the credentials needed to connect to the database. These credentials are then read from the file and used to access the data in AWS. 
 
 - in <i>database_utils.py</i>, created the method <i>read_db_creds</i>, which reads credentials yaml file
 - in <i>database_utils.py</i>, created the method <i>init_db_engine</i>, to read the credentials and initialise database engine
@@ -37,6 +42,8 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](database_utils-2.png?raw=true "Find the names of database tables.")
 ![multinational-retail-data-centralisation](data_extraction-1.png?raw=true "Read the desired database table.")
+
+Once the user data was read from AWS, it needed to be cleaned to get rid of faulty data, to harmonise formatting of dates and phone numbers, and to improve the style of data throughout the table.
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_user_data</i>, which cleans the table with user data
     - remove rows with n/a in them
@@ -50,15 +57,21 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](data_cleaning-1.png?raw=true "Clean the user data table.")
 
+Finally the cleaned used data needed to be stored into the database. The method to do this was later amended with other similar operations. 
+
 - in <i>database_utils.py</i>, created the method <i>upload_to_db</i>, which writes the cleaned user data table into the <i>sales_data</i> database as table <i>dim_users</i>
 
 ![multinational-retail-data-centralisation](database_utils-3.png?raw=true "Write cleaned user data into sales_data as dim_users.")
 
 <b>Task 4</b>
 
+Details of the cards of the users are stored in a PDF document that is in an AWS S3 bucket. Once the data was accessed in the PDF document, it was imported with Python package tabula-py into a Pandas DataFrame combining data from several different pages of the document. 
+
 - in <i>data_extraction.py</i>, created the method <i>retrieve_pdf_data</i>, which reads card data from a PDF file into a Pandas DataFrame
 
 ![multinational-retail-data-centralisation](data_extraction-2.png?raw=true "Read card data from a PDF file.")
+
+The card data contained inconsistent data and erroneous values, which needed to be cleaned before storing the table into the database. 
 
 - in <i>data_cleaning.py</i>, created the method <i>clean_card_data</i>, which cleans the table with card data
     - remove rows with null values
@@ -154,7 +167,7 @@ Besides the installation of PostgreSQL and Pgadmin, an SQL database is created t
 
 ![multinational-retail-data-centralisation](database_utils-8.png?raw=true "Write cleaned sales date events into sales_data as dim_date_times.")
 
-## Milestone 3: Create the database schema.
+## Create the database schema.
 
 Tables stored in the pgAdmin database <i>sales_data</i> are modified for a better data retrieval process further on. This involves changing the data types of columns in all tables and changing the structure and contents of tables in some rare cases. 
 
@@ -260,7 +273,7 @@ The problem was solved by doing this in pgAdmin 4:
 
 ![multinational-retail-data-centralisation](schema-15.png?raw=true "Solving the problem of a missing user_uiid and adding one more foreign key to the orders_table.")
 
-## Milestone 4: Querying the data.
+## Querying the data.
 
 Milestone description: <i>"Your boss is excited that you now have the schema for the database and all the sales data is in one location. Since you've done such a great job he would like you to get some up-to-date metrics from the data. The business can then start making more data-driven decisions and get a better understanding of its sales. In this milestone, you will be tasked with answering business questions and extracting the data from the database using SQL."</i>
 
