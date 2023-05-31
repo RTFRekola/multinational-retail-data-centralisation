@@ -7,14 +7,14 @@ Last modified on Tue 9 May 2023 at 20:05 UT
 @author: Rami T. F. Rekola 
 
 Multinational Retail Data Centralisation
-'''
+========================================
 
-
-'''
+Additional files where the classes and methods are hiding. 
 file1 = "database_utils.py"
 file2 = "data_extraction.py"
 file3 = "data_cleaning.py"
 '''
+
 import pandas as pd
 from database_utils import DatabaseConnector
 from data_extraction import DataExtractor
@@ -61,4 +61,6 @@ clean_sales = DaC.clean_sales_data(sales_data)
 
 DbC.upload_to_db(pd_table, pdf_data, store_details, clean_products, orders_df, sales_data)
 
-
+'''
+End of the main programme. Thank you for running me.
+'''

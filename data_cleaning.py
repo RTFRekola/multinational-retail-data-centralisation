@@ -5,16 +5,18 @@ class DataCleaning:
     '''
     This class is used to clean data from each of the data sources.
     '''
-    # class constructor
+
     def __init__(self):
 
         # attributes
         self.nothing = []
 
-    # methods
 #----------------------------------------------------------------------------
     def clean_user_data(self, user_data):
-        # clean the user data
+
+        '''
+        Clean the table with user data.
+        '''
 
         def fix_date1(in_date):
             split_str = in_date.split(' ')
@@ -183,9 +185,13 @@ class DataCleaning:
         return user_data
     # end clean_user_data
 
+
 #----------------------------------------------------------------------------
     def clean_card_data(self, card_data):
-        # clean card data from the pdf file
+
+        '''
+        Clean the table with card data from the pdf file.
+        '''
 
         def fix_expiry(in_exp):
             qmonth = int(in_exp[:2])
@@ -218,40 +224,33 @@ class DataCleaning:
         # 2. remove non-numeric characters from card_number
         card_data['card_number'] = card_data.apply(lambda row: fix_cardno(row['card_number']), axis=1)
 
-        # 3. change column type of card_number into number
-        # card_data[['card_number']] = card_data[['card_number']].apply(pd.to_numeric)
-
-        # 4. remove lines where card number < 1,000,000
-        # card_data = card_data.drop(card_data[card_data.card_number < 1000000].index)
-
-        # 5. swap month/year in expiry_date, if month > 12 and year < 13
+        # 3. swap month/year in expiry_date, if month > 12 and year < 13
         #    (assuming they are then in the wrong order), remove lines where the formatting is not ##/##
         card_data = card_data[card_data.expiry_date.str.len() == 5]
         card_data['expiry_date'] = card_data.apply(lambda row: fix_expiry(row['expiry_date']), axis=1)
 
-        # 6. change formatting of date_payment_confirmed into YYYY-MM-DD and the type into a date type
+        # 4. change formatting of date_payment_confirmed into YYYY-MM-DD and the type into a date type
         card_data['date_payment_confirmed'] = pd.to_datetime(card_data['date_payment_confirmed']).dt.date
 
-        # 7. remove duplicate rows
+        # 5. remove duplicate rows
         card_data = card_data.drop_duplicates()
 
         return card_data
     # end clean_card_data
 
+
 #----------------------------------------------------------------------------
     def clean_store_data(self, store_data):
-        # clean store data retrieve from the API
+
+        '''
+        Clean the table with store data retrieved from the API.
+        '''
 
         # 1. remove column lat
         del store_data['lat']
         
         # 2. fix row 48, index 0, so that address and locality are "online" 
         #    and longitude and latitude are "0"
-
-        #store_data = store_data.reset_index()
-        #store_data.rename(index={0:451},inplace=True)
-        #store_data = store_data.sort_values(by='index')
-
         store_data.iloc[0,1] = "online"
         store_data.iloc[0,2] = "0"
         store_data.iloc[0,3] = "online"
@@ -261,7 +260,7 @@ class DataCleaning:
         store_data = store_data.dropna(how='all')
 
         # 4. remove lines with garbage (values in longitude OR latitude 
-        # are not numbers) - including indexes 218, 406, 437 (all 'NULL') 
+        #    are not numbers) - including indexes 218, 406, 437 (all 'NULL') 
         store_data = store_data[pd.to_numeric(store_data['longitude'], errors='coerce').notnull()]
 
         # 5. fix index 31: staff_numbers = 'J78'  (apply fix to all rows)
@@ -287,21 +286,16 @@ class DataCleaning:
         # 11. remove duplicate rows
         store_data = store_data.drop_duplicates()
 
-        # 12. restore n/a to row 48, the "web portal"
-        # replace_with_na_all(data = store_data, condition = 'longitude' == 0)
-        # replace_with_na_all(data = store_data, condition = 'latitude' == 0)
-        # replace_with_na_all(data = store_data, condition = 'address' == "online")
-        # replace_with_na_all(data = store_data, condition = 'locality' == "online")
-
-        # 13. sort by the index column (not really needed, but maybe fun)
-        # store_data = store_data.sort_values(by='index')
-
         return store_data
     # end clean_store_data
 
+
 #----------------------------------------------------------------------------
     def convert_product_weights(self, prd):
-        # convert product weights into kilograms
+
+        '''
+        Convert product weights into kilograms.
+        '''
 
         def actual_conversion(product_weight):
             x = 0 ; y = 1
@@ -340,9 +334,13 @@ class DataCleaning:
         return prd
     # end convert_product_weights
 
+
 #----------------------------------------------------------------------------
     def clean_products_data(self, product_data):
-        # clean the product data
+
+        '''
+        Clean the table with product data.
+        '''
 
         def fix_ean(in_ean):
             out_ean = ""
@@ -394,9 +392,13 @@ class DataCleaning:
         return product_data
     # end clean_products_data
 
-#----------------------------------------------------------------------------
+#------------------
+# ----------------------------------------------------------
     def clean_orders_data(self, orders_data):
-        # clean the orders table data
+  
+        '''
+        Clean the orders table data.
+        '''
 
         # 1. remove columns first_name, last_name and 1
         del orders_data['1']
@@ -406,9 +408,12 @@ class DataCleaning:
         return orders_data
     # end clean_orders_data
 
+
 #----------------------------------------------------------------------------
     def clean_sales_data(self, sales_data):
-        # clean the sales data
+        '''
+        Clean the table with sales data.
+        '''
 
         def fix_month(in_month):
             if (in_month=="January"):
@@ -452,7 +457,6 @@ class DataCleaning:
         # end fix_numbers
 
         # 1. remove rows with n/a in them
-        #sales_data['timestamp'].replace('', np.nan, inplace=True)
         sales_data[sales_data['timestamp'].str.strip().astype(bool)]
         sales_data[sales_data['year'].str.strip().astype(bool)]
         sales_data[sales_data['month'].str.strip().astype(bool)]
@@ -468,9 +472,6 @@ class DataCleaning:
         sales_data['day'] = sales_data.apply(lambda row: fix_numbers(row['day']), axis=1)
 
         # 4. remove lines with garbage 
-        # Here we could have a process to check whether there is a 
-        # ##:##:## substring in the 'timestamp' and drop all the other
-        # characters. However, for the time being, let's skip this.
         try:
             mask = (sales_data['timestamp'].apply(lambda x: False if x[0].isdigit() else True) | 
                     sales_data['timestamp'].apply(lambda x: False if x[-1].isdigit() else True) | 
@@ -505,106 +506,3 @@ class DataCleaning:
     # end clean_sales_data
 
 #----------------------------------------------------------------------------
-
-'''
-# For testing:
-        print(type(user_data))
-        print(user_data.shape[0])
-        print(user_data.iloc[0])
-
-# In def clean_user_data
-
-# 3.
-        user_data = user_data.drop(user_data[(not user_data.longitude.str.isdigit()) | (not user_data.latitude.str.isdigit())].index)
-# or
-        user_data = user_data.drop(user_data[(user_data[not user_data.longitude.str.isdigit()]) | (user_data[not user_data.latitude.str.isdigit()])].index)
-# or
-        user_data = user_data.drop(user_data[(not user_data['longitude'].str.isdigit()) | (not user_data['latitude'].str.isdigit())].index)
-# or
-        user_data = user_data.drop(user_data[user_data[(not user_data.longitude.str.isdigit())]].index)
-# or
-        user_data = user_data[user_data['longitude'].apply(lambda x: type(x) in [float])]
-# or
-        user_data = user_data.query('longitude.str.isnumeric()')
-
-
-# 4.
-        user_data['staff_numbers'] = user_data.staff_numbers.str.replace(r"[a-zA-Z]",'')
-# or
-        user_data['staff_numbers'] = user_data['staff_numbers'].str.replace(r"[^0-9]+",'')
-
-# 8.
-        user_data = user_data.drop('lat', axis=1)
-
-# In def clean_card_data
-
-# 2.
-        user_data = user_data[pd.to_numeric(user_data['email_address'], errors='coerce').notnull()]
-        mask = (((ord(str(user_data['date_of_birth[0]'])) < 48) | (ord(str(user_data['date_of_birth[0]'])) > 57)) & ((ord(str(user_data['join_date[0]'])) < 48) | (ord(str(user_data['join_date[0]'])) > 57)) & 47 < ord(str(user_data['phone_number[-1]'])) < 58)
-        mask = (((ord(user_data['date_of_birth'[0]].str) < 48) | (ord(user_data['date_of_birth'[0]].str) > 57)) & ((ord(user_data['join_date'[0]].str) < 48) | (ord(user_data['join_date'[0]].str) > 57)) & 47 < ord(user_data['phone_number'[-1]].str) < 58)
-
-# 3. 
-        #user_data = user_data.apply(lambda x: fix_date0(x) if x.name=='join_date' else x)
-        #user_data = user_data.apply(lambda x: fix_date1(x) if x.name=='date_of_birth' else x)
-        #user_data = user_data.apply(lambda x: fix_date1(x) if x.name=='join_date' else x)
-
-# 5.
-        card_data['length'] = card_data.expiry_date.str.len()
-        card_data = card_data[card_data.length == 5]
-        del card_data['length']
-        # let's extract MM into a new column called 'inmo' and year to 'inyr'
-        card_data['inmo'] = card_data['expiry_date'].str[:2]
-        card_data['inyr'] = card_data['expiry_date'].str[3:]
-        card_data[['inmo', 'inyr']] = card_data[['inmo', 'inyr']].apply(pd.to_numeric)
-        mask = ((card_data['inmo'] > 12) & (card_data['inyr'] < 13))
-        temp = card_data.loc[mask, 'inmo']
-        card_data.loc[mask, 'inmo'] = card_data.loc[mask, 'inyr']
-        card_data.loc[mask, 'inyr'] = temp
-        card_data['inmo'] = card_data['inmo'].astype("string")
-        card_data['inyr'] = card_data['inyr'].astype("string")
-        card_data['expiry_date'] = card_data[['inmo', 'inyr']].agg('/'.join, axis=1)
-        del card_data['inmo']  ;  del card_data['inyr']
-
-
-# ???
-        card_data['middle'] = card_data.expiry_date[2]
-        card_data = card_data[card_data.middle == '/']
-        del card_data['middle']
-        card_data['ismonth'] = int(card_data['expiry_date'][:2])
-        card_data['isyear'] = int(card_data['expiry_date'][3:])
-        card_data = card_data[isinstance(card_data.ismonth, int) & isinstance(card_data.isyear, int)]
-        del card_data['ismonth']  ;  del card_data['isyear']
-
-# the previous 7 lines of code or the following 4 lines
-
-        card_data = card_data.drop(card_data[len(card_data['expiry_date'])!=5].index)
-        card_data = card_data.drop(card_data[type(card_data['expiry_date'][:2])!="int"].index)
-        card_data = card_data.drop(card_data[type(card_data['expiry_date'][2:3])!="/"].index)
-        card_data = card_data.drop(card_data[type(card_data['expiry_date'][3:])!="int"].index)
-
-
-     CAST(NULLIF(column, ’N/A’) AS FLOAT)   
-
-     
-        # 2. remove non-numeric characters from card_number
-        #card_data['card_number'] = card_data['card_number'].map(lambda x: ''.join([i for i in str(x) if i.isdigit()]))
-        #card_data['card_number'] = card_data['card_number'].str.replace(r'[^0-9]+', '')
-        card_data['card_number'] = card_data.apply(lambda row: fix_cardno(row['card_number']), axis=1)
-
-        # 3. change column type of card_number into number
-#        card_data[['card_number']] = card_data[['card_number']].apply(pd.to_numeric)
-
-        # 4. remove lines where card number < 1,000,000
-#        card_data = card_data.drop(card_data[card_data.card_number < 1000000].index)
-
-        # 5. swap month/year in expiry_date, if month > 12 and year < 13
-        #    (assuming they are then in the wrong order), remove lines where the formatting is not ##/##
-        card_data = card_data[card_data.expiry_date.str.len() == 5]
-        card_data['expiry_date'] = card_data.apply(lambda row: fix_expiry(row['expiry_date']), axis=1)
-
-        # at this point, let's convert expiry_date into %m/%Y
-#        card_data['expiry_date'] = card_data['expiry_date'].datetime.strftime('%m/%y')
-#        card_data['expiry_date'] = pd.to_datetime(card_data['expiry_date']).dt.date
-
-
-'''
