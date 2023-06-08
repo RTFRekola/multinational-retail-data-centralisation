@@ -18,13 +18,12 @@ class DataExtractor:
         self.nothing = []
 
 
-    def read_rds_table(self, tableword):
+    def read_rds_table(self, tableword, dbc):
 
         '''
         Read data from a database into Pandas DataFrame; choose the table by a keyword called tableword.
         '''
 
-        dbc = DatabaseConnector()
         engine = dbc.init_db_engine()
         table_name = dbc.list_db_tables(engine, tableword)
         df = pd.read_sql_table(table_name, engine)
@@ -94,7 +93,8 @@ class DataExtractor:
         '''
 
         s3 = boto.client('s3', config=Config(signature_version=UNSIGNED))
-        s3.download_file(BUCKET_NAME, OBJECT_NAME, FILE_NAME)
+        data.csv = s3.download_file(BUCKET_NAME, OBJECT_NAME, FILE_NAME)
+        the_data = pd.read_csv('data.csv')
         return product_data
     # end extract_from_s3_no_config
 

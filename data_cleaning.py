@@ -6,11 +6,6 @@ class DataCleaning:
     This class is used to clean data from each of the data sources.
     '''
 
-    def __init__(self):
-
-        # attributes
-        self.nothing = []
-
 #----------------------------------------------------------------------------
     def clean_user_data(self, user_data):
 

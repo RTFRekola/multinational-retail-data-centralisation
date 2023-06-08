@@ -20,10 +20,12 @@ from database_utils import DatabaseConnector
 from data_extraction import DataExtractor
 from data_cleaning import DataCleaning
 
-DbC = DatabaseConnector()
-DEx = DataExtractor()
-DaC = DataCleaning()
+# Instantiate the three classes with all the methods
+dbc = DatabaseConnector()
+dex = DataExtractor()
+dac = DataCleaning()
 
+# Initiate Pandas DataFrames
 data = []
 pd_table = pd.DataFrame(data)
 pdf_data = pd.DataFrame(data)
@@ -32,34 +34,44 @@ clean_products = pd.DataFrame(data)
 orders_df = pd.DataFrame(data)
 sales_data = pd.DataFrame(data)
 
-pd_table = DaC.clean_user_data(DEx.read_rds_table("user"))
+# Process user data -> dim_users
+pd_table = dac.clean_user_data(dex.read_rds_table(dbc, "user"))
+dbc.upload_to_db(pd_table, "dim_users")
 
-pdf_data = DaC.clean_card_data(DEx.retrieve_pdf_data())
+# Process card data -> dim_card_details
+pdf_data = dac.clean_card_data(dex.retrieve_pdf_data())
+dbc.upload_to_db(pdf_data, "dim_card_details")
 
-endpointurl = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores"
+# Process store data -> dim_store_details
+endpoint_url = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/number_stores"
 header_details = {'x-api-key': 'yFBQbwXe9J3sd6zWVAMrK6lcxxr0q1lr2PT6DDMX'}
-no_of_stores = DEx.list_number_of_stores(endpointurl, header_details)
+no_of_stores = dex.list_number_of_stores(endpoint_url, header_details)
 e = "https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/"
-endpointurl = (e + str(0))
-pd_stores = DEx.retrieve_stores_data(endpointurl, header_details)
+endpoint_url = (e + str(0))
+pd_stores = dex.retrieve_stores_data(endpoint_url, header_details)
 for i in range(0,no_of_stores):
-    endpointurl = (e + str(i+1))
-    pd_stores_i = DEx.retrieve_stores_data(endpointurl, header_details)
+    endpoint_url = (e + str(i+1))
+    pd_stores_i = dex.retrieve_stores_data(endpoint_url, header_details)
     pd_stores = pd.concat([pd_stores, pd_stores_i], axis="rows")
 # end for
-store_details = DaC.clean_store_data(pd_stores)
+store_details = dac.clean_store_data(pd_stores)
+dbc.upload_to_db(store_details, "dim_store_details")
 
+# Process product data -> dim_products
 s3_address = "s3://data-handling-public/products.csv"
-product_data = DEx.extract_from_s3(s3_address)
-clean_products = DaC.clean_products_data(product_data)
+product_data = dex.extract_from_s3(s3_address)
+clean_products = dac.clean_products_data(product_data)
+dbc.upload_to_db(clean_products, "dim_products")
 
-orders_df = DaC.clean_orders_data(DEx.read_rds_table("orders"))
+# Process the central orders table -> orders_table
+orders_df = dac.clean_orders_data(dex.read_rds_table(dbc, "orders"))
+dbc.upload_to_db(orders_df, "orders_table")
 
+# Process sales data -> dim_date_times
 s3_address = "https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json"
-sales_data = DEx.extract_json_from_s3(s3_address)
-clean_sales = DaC.clean_sales_data(sales_data)
-
-DbC.upload_to_db(pd_table, pdf_data, store_details, clean_products, orders_df, sales_data)
+sales_data = dex.extract_json_from_s3(s3_address)
+clean_sales = dac.clean_sales_data(sales_data)
+dbc.upload_to_db(sales_data, "dim_date_times")
 
 '''
 End of the main programme. Thank you for running me.
