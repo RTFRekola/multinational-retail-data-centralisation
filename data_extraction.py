@@ -24,8 +24,7 @@ class DataExtractor:
         Read data from a database into Pandas DataFrame; choose the table by a keyword called tableword.
         '''
 
-        engine = dbc.init_db_engine()
-        table_name = dbc.list_db_tables(engine, tableword)
+        (table_name, engine) = dbc.list_db_tables(tableword)
         df = pd.read_sql_table(table_name, engine)
         return df
     # end read_rds_table
